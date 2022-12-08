@@ -8,11 +8,13 @@ use std::str::FromStr;
 
 mod solutions {
     pub mod day01;
+    pub mod day02;
 }
 
 #[derive(Debug, PartialEq, EnumIter)]
 enum Solution {
-    Day1
+    Day1,
+    Day2
 }
 
 impl FromStr for Solution {
@@ -21,6 +23,7 @@ impl FromStr for Solution {
     fn from_str(input: &str) -> Result<Solution, Self::Err> {
         match input {
             "1"  => Ok(Solution::Day1),
+            "2"  => Ok(Solution::Day2),
             _    => Err(())
         }
     }
@@ -29,7 +32,8 @@ impl FromStr for Solution {
 impl fmt::Display for Solution {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Solution::Day1 => write!(f, "Day 1 Calorie Counting")
+            Solution::Day1 => write!(f, "Day 1 Calorie Counting"),
+            Solution::Day2 => write!(f, "Day 2: Rock Paper Scissors")
         }
     }
 }
@@ -67,7 +71,8 @@ fn main_loop() {
         let sol = get_solution(inpt);
 
         match sol {
-            Solution::Day1 => solutions::day01::solve()
+            Solution::Day1 => solutions::day01::solve(),
+            Solution::Day2 => solutions::day02::solve()
         }
     }
 }
