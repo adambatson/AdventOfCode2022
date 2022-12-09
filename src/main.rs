@@ -1,3 +1,5 @@
+#![feature(iter_array_chunks)]
+
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 

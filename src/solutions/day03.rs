@@ -39,7 +39,6 @@ fn get_rucksack_intersection(input: (Vec<&str>, Vec<&str>)) -> String {
 fn solve_part_a(input: &'static str) -> usize {
     let letter_map = build_letter_map();
 
-    println!("{:?}", letter_map);
 
     let part_a: usize = input.split("\n")
         .map(|line| {
@@ -54,6 +53,32 @@ fn solve_part_a(input: &'static str) -> usize {
     return part_a;
 }
 
+fn solve_part_b(input: &'static str) -> usize {
+    let letter_map = build_letter_map();
+
+    let part_b : usize = input.split("\n")
+        .array_chunks::<3>()
+        .enumerate()
+        .map(| c: (usize, [&str; 3]) | {
+            let sets: [HashSet<&str>; 3] = c.1.map(|str| {
+                return HashSet::from_iter(str.split("").filter(|&s| s != "")) ;
+            });
+            let intersection = sets
+                .iter()
+                .skip(1)
+                .fold(sets[0].clone(), |acc, hs| {
+                    acc.intersection(hs).cloned().collect()
+                });
+            let intersect = intersection.iter().next().unwrap().clone().to_string();
+            return letter_map[&intersect];
+        })
+        .collect::<Vec<usize>>()
+        .iter()
+        .sum();
+
+    return part_b;
+}
+
 pub fn solve() {
 
     println!("Solving Day 03\n");
@@ -61,6 +86,10 @@ pub fn solve() {
     let part_a = solve_part_a(INPUT);
 
     println!("Part A Solution = {}", part_a);
+
+    let part_b = solve_part_b(INPUT);
+
+    println!("Part B Solution = {}", part_b);
 }
 
 #[test]
@@ -96,6 +125,17 @@ fn test_solve_a() -> Result<(), ()> {
     let res = solve_part_a(input);
 
     assert_eq!(157, res);
+
+    Ok(())
+}
+
+#[test]
+fn test_solve_b() -> Result<(), ()> {
+    let input: &'static str = include_str!("../../inputs/test/day03.txt");
+
+    let res = solve_part_b(input);
+
+    assert_eq!(70, res);
 
     Ok(())
 }
