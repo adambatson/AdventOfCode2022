@@ -12,13 +12,15 @@ mod solutions {
     pub mod day01;
     pub mod day02;
     pub mod day03;
+    pub mod day04;
 }
 
 #[derive(Debug, PartialEq, EnumIter)]
 enum Solution {
     Day1,
     Day2,
-    Day3
+    Day3,
+    Day4
 }
 
 impl FromStr for Solution {
@@ -29,6 +31,7 @@ impl FromStr for Solution {
             "1"  => Ok(Solution::Day1),
             "2"  => Ok(Solution::Day2),
             "3"  => Ok(Solution::Day3),
+            "4"  => Ok(Solution::Day4),
             _    => Err(())
         }
     }
@@ -39,7 +42,8 @@ impl fmt::Display for Solution {
         match self {
             Solution::Day1 => write!(f, "Day 1 Calorie Counting"),
             Solution::Day2 => write!(f, "Day 2: Rock Paper Scissors"),
-            Solution::Day3 => write!(f, "Day 3: Rucksack Reorganization")
+            Solution::Day3 => write!(f, "Day 3: Rucksack Reorganization"),
+            Solution::Day4 => write!(f, "Day 4: Camp Cleanup")
         }
     }
 }
@@ -79,7 +83,8 @@ fn main_loop() {
         match sol {
             Solution::Day1 => solutions::day01::solve(),
             Solution::Day2 => solutions::day02::solve(),
-            Solution::Day3 => solutions::day03::solve()
+            Solution::Day3 => solutions::day03::solve(),
+            Solution::Day4 => solutions::day04::solve()
         }
     }
 }
