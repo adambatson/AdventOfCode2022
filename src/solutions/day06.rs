@@ -42,6 +42,7 @@ fn test_part_a_example_a() -> Result<(), ()> {
     Ok(())
 }
 
+#[test]
 fn test_part_a_example_b() -> Result<(), ()> {
     let input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
 
