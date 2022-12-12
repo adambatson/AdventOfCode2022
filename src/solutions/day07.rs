@@ -1,4 +1,4 @@
-use std::{iter::Peekable, str::Split};
+/* use std::{iter::Peekable, str::Split};
 
 const INPUT: &'static str = include_str!("../../inputs/day07.txt");
 
@@ -29,7 +29,7 @@ fn handle_list_command(iter: &mut Peekable<Split<&str>>, pwd: &FileSystem) {
 
 }
 
-fn build_file_directory(input: &'static str) -> FileSystem {
+/* fn build_file_directory(input: &'static str) -> FileSystem {
     let mut pwd: FileSystem = create_file_node("/".to_string(), 0, FileType::Directory, None).to_owned();
 
     let mut iter = input.split("\n").collect::<Vec<&str>>();
@@ -55,8 +55,12 @@ fn build_file_directory(input: &'static str) -> FileSystem {
     }
 
     return pwd;
-}
+} */
 
 pub fn solve() {
     println!("Solving Day 7!");
-}
+} */
+
+pub fn solve() {
+    println!("Solving Day 7!");
+} 
