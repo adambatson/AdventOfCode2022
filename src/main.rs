@@ -18,6 +18,7 @@ mod solutions {
     pub mod day07;
     pub mod day08;
     pub mod day09;
+    pub mod day10;
 }
 
 #[derive(Debug, PartialEq, EnumIter)]
@@ -30,7 +31,8 @@ enum Solution {
     Day6,
     Day7,
     Day8,
-    Day9
+    Day9,
+    Day10
 }
 
 impl FromStr for Solution {
@@ -38,15 +40,16 @@ impl FromStr for Solution {
 
     fn from_str(input: &str) -> Result<Solution, Self::Err> {
         match input {
-            "1"  => Ok(Solution::Day1),
-            "2"  => Ok(Solution::Day2),
-            "3"  => Ok(Solution::Day3),
-            "4"  => Ok(Solution::Day4),
-            "5"  => Ok(Solution::Day5),
-            "6"  => Ok(Solution::Day6),
-            "7"  => Ok(Solution::Day7),
-            "8"  => Ok(Solution::Day8),
-            "9"  => Ok(Solution::Day9),
+            "1"   => Ok(Solution::Day1),
+            "2"   => Ok(Solution::Day2),
+            "3"   => Ok(Solution::Day3),
+            "4"   => Ok(Solution::Day4),
+            "5"   => Ok(Solution::Day5),
+            "6"   => Ok(Solution::Day6),
+            "7"   => Ok(Solution::Day7),
+            "8"   => Ok(Solution::Day8),
+            "9"   => Ok(Solution::Day9),
+            "10"  => Ok(Solution::Day10),
             _    => Err(())
         }
     }
@@ -63,7 +66,8 @@ impl fmt::Display for Solution {
             Solution::Day6 => write!(f, "Day 6: Tuning Trouble"),
             Solution::Day7 => write!(f, "Day 7: No Space Left On Device"),
             Solution::Day8 => write!(f, "Day 8: Treetop Tree House"),
-            Solution::Day9 => write!(f, "Day 9: Rope Bridge")
+            Solution::Day9 => write!(f, "Day 9: Rope Bridge"),
+            Solution::Day10 => write!(f, "Day 10: Cathode-Ray Tube")
         }
     }
 }
@@ -109,7 +113,8 @@ fn main_loop() {
             Solution::Day6 => solutions::day06::solve(),
             Solution::Day7 => solutions::day07::solve(),
             Solution::Day8 => solutions::day08::solve(),
-            Solution::Day9 => solutions::day09::solve()
+            Solution::Day9 => solutions::day09::solve(),
+            Solution::Day10 => solutions::day10::solve()
         }
     }
 }
