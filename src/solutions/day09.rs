@@ -30,24 +30,67 @@ struct Point {
     y: usize
 }
 
+struct Knot {
+    curr_point: Point,
+    visited_points: HashSet<Point>
+}
+
+impl Knot {
+    fn follow(&mut self, other: Point) {
+        let diff_x = other.x as isize- self.curr_point.x as isize;
+        let diff_y = other.y as isize - self.curr_point.y as isize;
+
+        if diff_x.abs() == 1 && diff_y.abs() == 1 {
+            return;
+        }
+
+        if diff_x.abs() > 1 && diff_y.abs() > 1 {
+            if diff_x > 0 {
+                self.curr_point.x += 1;
+            } else {
+                self.curr_point.x -= 1;
+            }
+            if diff_y > 0 {
+                self.curr_point.y += 1;
+            } else {
+                self.curr_point.y -= 1;
+            }
+        } else if diff_x.abs() > 1 {
+
+            if diff_x > 0 {
+                self.curr_point.x += 1;
+            } else {
+                self.curr_point.x -= 1;
+            }
+            self.curr_point.y = other.y;
+        } else if diff_y.abs() > 1 {
+
+            if diff_y > 0 {
+                self.curr_point.y += 1;
+            } else {
+                self.curr_point.y -= 1;
+            }
+            self.curr_point.x = other.x;
+        };
+        self.visited_points.insert(self.curr_point);
+    }
+}
+
 struct Board {
-    cells: Vec<Vec<char>>,
-    head: Point,
-    tail: Point,
-    tail_points: HashSet<Point>
+    knots: Vec<Knot>
 }
 
 impl Board {
     fn new() -> Self {
-        let mut grid = vec![vec!['.'; 1000]; 1000];
-        grid[500][500] = 'H';
-        let mut board = Board {
-            cells: grid,
-            head: Point {x: 500, y: 500},
-            tail: Point {x: 500, y: 500},
-            tail_points: HashSet::new()
+        let mut knots = Vec::new();
+        for _ in 0..11 {
+            let p = Point {x: 500, y: 500};
+            knots.push(Knot {curr_point: p, visited_points: HashSet::new()});
+        }
+
+        let board = Board {
+            knots: knots
         };
-        board.tail_points.insert(board.tail);
         return board;
     }
 
@@ -80,50 +123,30 @@ impl Board {
     }
 
     fn move_right(&mut self) {
-        self.head.x += 1;
-        self.move_tail();
+        self.knots[0].curr_point.x += 1;
+        self.move_knots();
     }
 
     fn move_left(&mut self) {
-        self.head.x -= 1;
-        self.move_tail();
+        self.knots[0].curr_point.x -= 1;
+        self.move_knots();
     }
 
     fn move_down(&mut self) {
-        self.head.y -= 1;
-        self.move_tail();
+        self.knots[0].curr_point.y -= 1;
+        self.move_knots();
     }
 
     fn move_up(&mut self) {
-        self.head.y += 1;
-        self.move_tail();
+        self.knots[0].curr_point.y += 1;
+        self.move_knots();
     }
 
-    fn move_tail(&mut self) {
-        let diff_x = self.head.x as isize- self.tail.x as isize;
-        let diff_y = self.head.y as isize - self.tail.y as isize;
-
-        if diff_x.abs() == diff_y.abs() {
-            return;
+    fn move_knots(&mut self) {
+        for i in 1..self.knots.len() {
+            let other_point = self.knots[i - 1].curr_point;
+            self.knots[i].follow(other_point);
         }
-
-        if diff_x.abs() > 1 {
-            if diff_x > 0 {
-                self.tail.x += 1;
-            } else {
-                self.tail.x -= 1;
-            }
-            self.tail.y = self.head.y;
-        }
-        if diff_y.abs() > 1 {
-            if diff_y > 0 {
-                self.tail.y += 1;
-            } else {
-                self.tail.y -= 1;
-            }
-            self.tail.x = self.head.x;
-        }
-        self.tail_points.insert(self.tail);
     }
 }
 
@@ -136,9 +159,13 @@ pub fn solve() {
         board.handle_move(line);
     }
 
-    let part_a = board.tail_points.len();
+    let part_a = board.knots[1].visited_points.len();
 
     println!("Part A Solution = {}", part_a);
+
+    let part_b = board.knots[9].visited_points.len();
+
+    println!("Part Board Solution = {}", part_b);
 }
 
 #[test]
@@ -147,13 +174,28 @@ pub fn test_part_a() -> Result<(), ()> {
 
     let mut board = Board::new();
 
+    for line in input.split("\n") {
+        board.handle_move(line);
+    }
+
+    let part_a = board.knots[1].visited_points.len();
+
+    assert_eq!(13, part_a);
+
+    Ok(())
+}
+
+#[test]
+pub fn test_actual_part_a() -> Result<(), ()> {
+    let mut board = Board::new();
+
     for line in INPUT.split("\n") {
         board.handle_move(line);
     }
 
-    let part_a = board.tail_points.len();
+    let part_a = board.knots[1].visited_points.len();
 
-    assert_eq!(13, part_a);
+    assert_eq!(6018, part_a);
 
     Ok(())
 }
